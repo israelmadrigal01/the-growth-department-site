@@ -16,8 +16,7 @@ export async function handler(event) {
       text: `Name: ${data.name || ''}
 Email: ${data.email || ''}
 Message: ${data.message || ''}`,
-      // Helps replies go to the person who filled the form
-      reply_to: data.email ? [data.email] : undefined,
+      reply_to: data.email ? [data.email] : undefined
     };
 
     const resp = await fetch('https://api.resend.com/emails', {
@@ -29,7 +28,7 @@ Message: ${data.message || ''}`,
       body: JSON.stringify(payload),
     });
 
-    const text = await resp.text(); // <- capture Resend's error
+    const text = await resp.text(); // capture Resend's error details
     if (!resp.ok) {
       console.log('Resend error', resp.status, text);
       return { statusCode: resp.status, body: text || 'Email send failed' };
